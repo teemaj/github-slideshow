@@ -1,0 +1,188 @@
+\documentclass[11pt,a4paper,oneside]{article}
+
+\usepackage{adjustbox}
+\usepackage{afterpage}
+\usepackage{booktabs}
+\usepackage{color}
+\usepackage{colortbl}
+\usepackage[a4paper, margin=1in]{geometry}
+\usepackage{hyperref}
+\usepackage{multirow}
+\usepackage{pdflscape}
+\usepackage{graphicx}
+\graphicspath{ {images/} }
+\usepackage{soul}               % for highlighting
+\usepackage[color=green!40]{todonotes}
+% enable the use of \cite, \eqref, and so on inside highlighted texts
+\soulregister\cite7
+\soulregister\footnote7
+\soulregister\eqref7
+\soulregister\ref7
+\usepackage{url}
+% better loading hyperref as the last package
+% \usepackage[colorlinks,bookmarksopen,bookmarksnumbered,citecolor=red,urlcolor=red]{hyperref}
+\usepackage{hyperref}
+% \hypersetup{hidelinks}
+\tolerance=1000
+
+%% macros and commands
+\newcommand{\comment}[1]{\todo[inline,caption={}]{\textbf{\textsc{Comment}}:~#1}}
+\newcommand{\response}[1]{\todo[color=orange!40,inline,caption={}]{\textbf{\textsc{Response}}:~#1}}
+% \newcommand{\todos}[2]{\todo[color=yellow!40,inline,caption={}]{\textbf{\textsc{Todos~for~#1}}:~#2}}
+\newcommand{\todos}[1]{\todo[color=yellow!40,inline,caption={}]{\textbf{\textsc{Todo}}:~#1}}
+\setlength{\marginparwidth}{2cm}
+
+\begin{document}
+
+\title{Design and Implementation of Machine-Learning-Based Controllers for Crude
+  Oil Distillation Unit\\
+  
+  CDU Mathematical Modeling
+ }
+  
+
+\author{KASSIM, Shakiru Olajide}
+
+\pagenumbering{gobble}
+\maketitle
+
+\newpage
+\pagenumbering{arabic}
+
+\section {Introduction}
+The amount of energy needed in the distillation process of crude oil is quite enormous because of high quantity of heat exchange between the components (trays) of the CDU. In order to obtain the desired quality of end products, the CDU control process needs to be energy efficient. In the design of this CDU control, we are aiming at using the reflux rate L and the boilup rate V as the inputs to control the outputs of the purity of the distillate overhead and the impurity of the bottom products (i.e composition control) for a continuous distillation process as adopted by \cite{Anish:37, Minh:38, Jay:40, Yun:44}.
+
+\section {Process Control Scheme}
+Since the optimal goal in the control design is to stabilize the distillation column so as to avoid any drift, the “bottom-up” process control scheme approach will be used. Which means that temperature measurement by feedback control will be utilized for faster response consequently short time for the composition to change at the column ends \cite{Satyajit:25}.
+
+\section{Mathematical Modeling}
+The CDU distillation control processes is energy-separating-agent equilibrium process that uses the difference in relative volatility or differences in boiling points of the components to be separated. The mathematical model of CDU will be developed using of the mass and energy balances differential equations as stated by \cite{Duraid:31, Duraid:32,Suresh:36,Anish:37}
+
+The CDU is a long tower comprising of several components, which are responsible for the energy and mass transfer within it. These components and their number in the unit vary according to design but mostly common equations can be applied for the energy and mass transfer analysis.
+
+According to \cite{Duraid:31, Duraid:32,Minh:38}, the rate of material accumulation in the CDU is equal to the amount entered and generated, less the amount leaving and consumed within the CDU. In the mathematical modeling of the CDU, the assumptions adopted in \cite{Minh:38,Zhiyun:41,Yousif:42,Wen:39} will be considered. These are:
+\begin{itemize}
+\item Constant relative volatility throughout the column
+\item Total condensation of overhead vapour.
+\item constant and
+perfectly mix of liquid holdups on each tray, the condenser, and the reboiler.
+\item Negligible holdup of vapor throughout the CDU.
+\item Constant molar flow rates of the vapor and liquid through the stripping and rectifying sections.
+
+\end{itemize}
+
+\subsection{Vapour-liquid equilibrium equations}
+Considering constant relative volatility throughout the CDU, i.e.  vapour leaving a tray is in equilibrium with the liquid on the tray the vapor-liquid equilibrium relation will be expressed as \cite{Anish:37,Suresh:36, Minh:38,Wen:39,Zhiyun:41,Yousif:42,Estiyanti:43,Yun:44}: 
+\begin{equation}
+  \label{eq:V-L equilibruim}
+y_n = \frac{\alpha x_n}{1+(\alpha – 1)x_n} ,
+\end{equation}
+where $x_n$ and $y_n$ and $\alpha $ denote the liquid concentration on nth stage, vapor concentration on nth stage, and relative volatility, respectively.
+
+\subsection{Mass and Energy Transfer analysis}
+Considering equation (1) and (2), the material balance of the CDU in terms of the differential equations that will represents its mass and energy balance will be deduced by adopting the work of \cite{Duraid:32,Suresh:36, Minh:38}
+
+The mass balance differential equations is given by
+%%%
+\begin{equation}
+  \label{eq:mass_balance}
+MR_{in} - MR_{out} = MR_{acc} ,
+\end{equation}
+%%%
+where $MR_{in}$ and $MR_{out}$ and $MR_{acc}$ denote the rates of mass in, mass out, and mass accumulation, respectively.
+%%%
+Similarly, we will obtain the energy balance differential equations as follows:
+%%%
+\begin{equation}
+  \label{eq:energy_balance}
+HR_{in} - HR_{out} = HR_{acc} ,
+\end{equation}
+%%%
+where $HR_{in}$, $HR_{out}$, and $HR_{acc}$ denote the rates of heat in, heat out, and heat accumulation, respectively.
+
+The mass and energy balance differential equations to be deduced will be for the following:
+\begin{itemize}
+    \item condenser and reflux drum
+    \item top tray
+    \item nth tray (depending on the number of tray in the CDU)
+    \item feed tray
+    \item bottom tray
+    \item reboiler
+    \item condensation tank
+\end{itemize}
+
+\section{Model Parameters of the CDU}
+To be able to implement the deduced mathematical model, some basic model parameters are required. Kaduna Refinery is one of the four refineries in Nigeria, though presently not functional but it is under rehabilitation. The model parameters to be used for the CDU control design will be from this refinery. The expected parameters to be obtained from the refinery will include:
+\begin{enumerate}
+  \item No of trays,
+  \item Feed tray,
+  \item Relative volatility,
+  \item Feed composition,
+  \item Feed condition,
+  \item Feed flow rate,
+  \item Properties and types of Distillates compositions: Substance, Weight, Boiling Temperature, Molecular
+Weight,and Density,
+    \item Reflux rate,
+    \item Boil up rate,
+    \item Liquid holdup in condenser,
+    \item Liquid holdup in the reboiler, etc
+\end{enumerate}
+
+\section{Conclusion}
+When all required model information is obtained, and adopting the some basic concepts from literature reviewed, the mathematical model of the CDU in the Kaduna refinery will be developed and possible simulated.
+
+\afterpage{%
+  \clearpage       % flush earlier floats
+  \thispagestyle{empty}
+  \begin{landscape}         % landscape page
+    \centering              % center the table
+    % Table generated by Excel2LaTeX from sheet 'Sheet1'
+\begin{table}[htbp]
+  \centering
+  \begin{adjustbox}{width=\columnwidth,center}
+    \begin{tabular}{|r|p{9.72em}|p{10.78em}|p{10.555em}|p{10.835em}|p{10.11em}|}
+    \toprule
+    \multicolumn{1}{|p{1.61em}|}{s/n} & Author(s) & Nature of Study & Type of plant & modelling approach & Control Technique \\
+    \midrule
+    1     & D. F. Ahmed \& M. O. Ahmed (2017) & Dynamic Behavior and Control & Methanol-Toluene Distillation Column & mass and energy balance, and VLE relation & PID and fuzzy logic \\
+    \midrule
+    2     & D. F. Ahmed \& M. Y. Nawaf (2018) & Simulation Study in Control System Configuration & Distillation Column (binary) & mass and energy balance, and VLE relation & Multi-Loop PID \\
+    \midrule
+    3     & M. Sharmila \& V. Mangaiyarkarasi (2014) & Modeling and Control & Binary Distillation Column & mass and energy balance, and VLE relation & LabVIEW software \\
+    \midrule
+    4     & S. Kumar \& M. W. Ali (2014) & Modeling and Control  & Multi-Component Crude Oil Distillation Column & mass and energy balance, and VLE relation & LabVIEW Software \\
+    \midrule
+    5     & V. T. Minh \& A. M. Abdul-Rani (2009) & Modeling and Control & Dual Composition Control distillation & mass and energy balance, and VLE relation & Model-Reference Adaptive Control \\
+    \midrule
+    6     & J. S. Useche, A. Orjuela \& D. Amaya (2017) & Modeling and Control & Multivariable Crude Oil Distillation Column & State Space & Model Predictive Control \\
+    \midrule
+    7     & P. Mishra, V. Kumar \& K. P. S. Rana (2015) & Modeling and Control & Binary Distillation Column & mass and energy balance, and VLE relation & Fractional Order Fuzzy PID control \\
+    \midrule
+    8     & A. M. Doust, F. Shahraki \& J. Sadeghi (2012) & Simulation, Control and sensititvity Analysis & Binary Distillation Column & mass and energy balance, and VLE relation & PID Control \\
+    \midrule
+    9     & G. Radulescu (2007) & Approach for Dynamic Simulation (Modeling) & Multi-Component Crude Oil Distillation Column & mass and energy balance, and VLE relation & nil \\
+    \midrule
+    10    & W. Yu, A. S. Poznyak \& J. Alvarez (1999) & Robust Adaptive Control & Multi-Component Crude Oil Distillation Column & mass and energy balance, and nonlinear reference & Dynamic Neural Network \\
+    \midrule
+    11    & Z. Zou, D. Y. Z. Hu, N. Guo, L. Yu \& W. Feng (2006) & Modeling and Control & Binary Batch Distillation Column & State spae modeling based on mass and energy balance and VLE relation & Model Predictive Control  \\
+    \midrule
+    12    & Y. Al-Dunainawi \& M. F. Abbod (2015) & Modeling and Control & Binary Distillation Column & mass and energy balance, and VLE relation & Proportional Derivative Fuzzy Control \\
+    \midrule
+    13    & Y. Cheng, Z. Chen, M. Sun \& Q. Sun (2018) & Modeling and Control & Binary distillation column & Material balance & dynamic decoupling control based on active disturbance rejection control \\
+    \bottomrule
+    \end{tabular}%
+       \end{adjustbox}%
+      \caption{Tabular summary/comparison of the different models published}
+      \label{tab:literature_comparism}%
+    \end{table}%
+  \end{landscape}
+  \clearpage
+}                               % end of \afterpage
+%%%
+\newpage
+%%% References
+\bibliographystyle{IEEEtran}
+\bibliography{PhD_Proposal_Kassim}
+
+
+\end{document}
